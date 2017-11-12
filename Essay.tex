@@ -1,7 +1,5 @@
 \documentclass{journal}
 
-\usepackage{listings}
-
 \title{On Goto Killing You in Your Sleep}
 \author{Louis Foy}
 \date{\today}
@@ -39,6 +37,7 @@
 
 @article{gotoodeep,
     title = "Go to considered harmful considered harmful"
+	url = "http://web.archive.org/web/20090320002214/http://www.ecn.purdue.edu/ParaMount/papers/rubin87goto.pdf"
 }
 
 @article{loopbreaking,
@@ -48,9 +47,14 @@
 
 @article{gotostudy,
     title = "An empirical study of goto in C code from GitHub repositories",
+	author = "Meiyappan Nagappan et al.",
     url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=2786834&CFID=827503237&CFTOKEN=60937548"
 }
+
 @article{againstgoto, 
+    title = "A case against the GOTO",
+	author = "W. A. Wulf",
+	url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=987372"
 }
 
 @article{harmfulstructure,
@@ -72,6 +76,48 @@
     url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=2722945"
 }
 
+@article{truths,
+    title = "How do we tell truths that might hurt?",
+	author = "Edser W. Dijkstra",
+	month = "May",
+	year = "1982",
+	booktitle = "ACM SIGPLAN Notices",
+	volume = "17",
+	issue = "5",
+	pages = "13-15",
+	address = "New York, NY"
+}
+
+@book{structured,
+    title = "Structured programmin",
+	author = "O. J. Dahl et al.",
+	year = "1972",
+	address = "Academic Press Ltd., London, UK"
+	url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=1243380&CFID=828454876&CFTOKEN=46578168"
+}
+
+@book{cprogramming,
+    title = "The C Programming Language",
+	author = "Brian W. Kernighan and Dennis M. Ritchie",
+	url = "http://www.dipmat.univpm.it/~demeio/public/the_c_programming_language_2.pdf"
+}
+
+@article{github,
+    title = "The promises and perils of mining on GitHub",
+	author = "Eirini Kalliamvakou",
+	booktitle = "Proceedings of the 11th Working Conference on Mining Software Repositories",
+	pages = "92-101",
+	month = "May",
+	year = "2014",
+	url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=2597074&CFID=828454876&CFTOKEN=46578168"
+}
+	
+@article{structuredgoto,
+    title = "Structured programming with Goto Statements",
+	author = "Donald E. Knuth",
+	url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=356640&CFID=828454876&CFTOKEN=46578168"
+}
+	
 \end{filecontents*}
 
 \usepackage{graphicx}
@@ -89,50 +135,46 @@
 % \textbf \textit \underline
 
 \section{\textunderscore \textunderscore Introduction:;}
-In March 1968, a notorious paper was published. Titled 'Go to statement considered harmful' \cite{goto}, it was written by Edsger W. Dijkstra, an influential pioneer of computer science during its early days, if `influential' were a measurement of the vast swathes of `considered harmful' papers one could instantly inspire across acedemia (CITE). His paper can be summarised as a criticism that using goto statements, by allowing the process to jump to various areas in code with no obvious links or recollection from where it came, causes the flow of the program's execution to diverge greatly from the flow of text, compromising readability and the integrity of the code. He proposed that the use of goto statements be avoided outside machine level code.
+In March 1968, a notorious paper was published. Titled 'Go to statement considered harmful' \cite{goto}, it was written by Edsger W. Dijkstra, an influential pioneer of computer science during its early days, if `influential' were a measurement of the vast swathes of `considered harmful' papers one could instantly inspire across acedemia (CITE). His paper can be summarised as a criticism that using goto statements causes the flow of the program's execution to diverge greatly from the flow of text, by allowing the process to jump to various areas in code in an unstructured manner, with no obvious indicators from where it came. Due to the compromise in human readability he proposed that the use of goto statements be avoided outside machine level code.
 
-\begin{figure}
-\includegraphics[width=\linewidth]{std.pdf}
-\caption{A snippet of Dijkstra's pathfinding algorithm written with goto statements in Comic Sans. The fact that their code actually compiled was probably Dijkstra's biggest concern for the future of these programmers.}
-\label{fig:pathfinding}
-\end{figure}
-
-In their cricitism of what was once common practice in the era[CITE], Dijkstra's statements were quite bold. While his motivation was apparently a negative correlation between programming quality and the number of goto statements in the code \cite{goto}, the observent would notice that Dijkstra is the creator of the popular complex pathfinding algorithm now known by his name \cite{pathfinding}, and could very reasonably argue that his hatred for the goto statement manifested because the ability to simply `go to' some code is far too easy for the programmer. Thus began Dijkstra's collision-free descent into madness that pulled many programmers and academics along with him in the cold grasps of the ``considered harmful'' phenomenon, in the ever deeping existential crisis illustrating how every single thing is flawed in some way.
+In their cricitism of what was once common practice in the era[CITE], Dijkstra's statements were quite bold. While his motivation was apparently a negative correlation between programming quality and the number of goto statements in the code \cite{goto}, the observent would recognise Dijkstra as the creator of the popular pathfinding algorithm now known by his name \cite{pathfinding}, and could very reasonably argue that his hatred for the goto statement manifested because the ability to simply `go to' some code is far too easy for the programmer. As Dijkstra's collision-free descent into madness that pulled many programmers and academics along with him in the cold grasps of the ``considered harmful'' phenomenon took place, in the ever deeping existential crisis illustrating how virtually everything in programming is flawed in some way as our souls are sold to the megacorporations of tomorrow \cite{truths}, he reminisces.
 
 For the next part of the essay \textbf{goto ``To Pascal''}
 
-\section{Goto in practice:;}
-To see whether a backwards goto statement should be useful, it is worth discovering what goto is typically used for in the first place. An extensive study \cite{gotostudy} of one of the world's largest open code repositories, GitHub, found that most goto statements in modern C code are used for error handling. This is usually characterised by a function, sometimes one which loads various error-dependent resources, followed by a function end returning success, then followed by an `error:' label of such, beneath which any successfully-loaded resources are freed before returning. This is popular, but does not necessitate a backwards-capable goto statement as the error condition is usually placed at the end of the function \cite{gotostudy}.
-
-The study itself ultimately concluded that 90\% of goto uses were forward only, and usually used for reasonable purposes. It can thus be safely assumed that the programmer may in fact have a say of the devil's powers after all, and that goto can be used for good, and it is perhaps us who are evil.
+\section{Conclusion}
+If you arived here before reading the rest of the essay please restart the program.
 
 Today it is truly a wonder whether the goto statement has a right to exist, similar to the enigma of whether programmers have a right to exist with it. This appears to be why the goto statement is still around today; while 90\% of uses could be resolved with forward-only specialised jump statements, nobody can truly predict how the volatile community of programmers would react. Thus it seems that goto is here to stay, at least until another new programming language comes along. With the dawn of quantum computing, there is still hope yet; until then, we live with popular programming languages that stand at about 30 to 50 years old.
+
+\section{``Goto'' in Practice:;}
+To see whether a backwards goto statement should be useful, it is worth discovering where goto is typically used in the first place. An extensive study \cite{gotostudy} of one of the world's largest open code repositories \cite{github}, GitHub, found that most goto statements in modern C code are used for error handling. This is usually characterised by a function, sometimes one which loads various error-dependent resources, followed by a function end returning success, then followed by an `error:' label of such, beneath which any successfully-loaded resources are freed before returning. This is popular, but does not necessitate a backwards-capable goto statement as the error condition is usually placed at the end of the function \cite{gotostudy}. [MAKE A CODE FIGURE]
+
+The study itself ultimately concluded that 90\% of goto uses were forward only, and believed to be used for reasonable purposes. It can thus be safely assumed that the programmer may in fact have a say of the devil's powers after all, and that goto can be used for good, and it is perhaps us who are evil.
+
+
 
 \section{OOP considered harmful?}
 
 \section{To Pascal:;}
-Dijkstra's disdain for the resulting messiness of computer programs was not unique. His paper itself found inspiration from the words of C. A. R. Hoare, who with N. Wirth \cite{algolwirth} recommended the reduction of labels and go to statements while proposing changes to the ALGOL language in 1965 with a similar rationale that the structure of a program would be clearer with alternative 'case' statements and loops. In their proposal 'goto' would be reduced to a statement that would do no more than jump to a label in code, and stripped of any other complexities.
+Dijkstra's disdain was not unique. His paper itself found inspiration from the words of N. Wirth, who with C. A. R. Hoare \cite{algolwirth} advised the demotion of labels and go to statements whilst proposing changes to the ALGOL language in 1965, with a similar rationale that the structure of a program would be clearer with alternative 'case' statements and loops. In their proposal, 'goto' would be stripped of all complexities, leaving no more than a usable statement should the ability to jump anywhere in code be needed.
 
 For a trivial side remark about the proposed case statements, set \textbf{x} to here, then \textbf{goto} "Switch statements".
 
-In fact it is arguable that it was Wirth who took the major role in demoting goto in favour of structured programming (considered harmful \cite{harmfulstructure}). When his and his team's proposals for ALGOL were rejected in favour of a more complex overhaul (to become ALGOL 68) \cite{pascalrecollections}, Wirth went on to produce ALGOL W, whilst the Working Group created ALGOL 68. Wirth's goal was to advance programming, despite the presence of far more popular languages, and produce a language with improved structure and easier learning curve. Meanwhile, ALGOL 68 failed, creating a new hole in the market through which Wirth's next language, Pascal \cite{pascal} would begin to thread in 1970 \cite{pascalrecollections}.
+It is as such arguable that it was Wirth who took the more active role in demoting goto in favour of structured programming (considered harmful \cite{harmfulstructure}). When his and his team's proposals for ALGOL were rejected in favour of a more complex overhaul (to become ALGOL 68) \cite{pascalrecollections}, Wirth went on to produce ALGOL W, whilst the Working Group created ALGOL 68. Soon after, ALGOL 68 failed, creating a new hole in the market through which Wirth's next language, Pascal \cite{pascal} would begin to thread in 1970 \cite{pascalrecollections}.
 
-However, in spite of these developments, for some reason, goto statements still existed, even implemented into Pascal itself \cite{pascal}. Some factors must haves holding back the removal of the goto statement, leaving it to continuously crop up in unexpected places. Please \textbf{goto ``Prevalence of the goto feature''}.
+Wirth's goal with Pascal was to advance programming, despite the presence of far more popular, yet stagnated languages, and create a language with improved structure and easier learning curve \cite{pascal}. With regards to goto, Pascal aimed to push structured programming, explained in great detail in a book partly authored by Dijkstra himself \cite{structured} reiterating the need for code to flow roughly proportionally to the internal process.
 
-\section{Greater awareness:;}
+Yet contrary to all the developments above, for some reason, goto statements still existed, even implemented into Pascal itself \cite{pascal}. \textbf{goto ``Prevalence of the goto feature''}.
 
-\section{Prevalence of the goto feature}
-Much like cigarette packages and forbidden fruit, these functionalities somehow still lie available to us, with the advice 'DO NOT USE' written on their packets (with the difference that programmers actually obey it).  In fact, one of the most popular programming languages of today, C, has a functional goto statement. It calls to question, if goto were truly harmful, why is it still included in modern programming languages? Even Microsoft's modern interpretation of C++, C\#, features a version of goto that is in fact expanded to also support switch labels[CITE]. Why plant evil in the garden and call it a weed?
+\section{Prevalence of the goto feature:;}
+Much like a cigarette package or forbidden fruit, this functionality somehow still lies available to us, with 'DO NOT USE' written on it.  In fact, one of the most popular programming languages of today, C, has a functional goto statement \cite{cprogramming}, described by D. Ritchie as `infinitely abusable and unnecessary' \cite{cprogramming} while he gleefully implemented it into the compiler. It calls to question, if goto were truly harmful, why is it still included in modern programming languages? Even Microsoft's modern interpretation of C++, C\#, features a version of goto that is in fact expanded to also support switch labels[CITE]. Why plant evil in the garden and call it a weed?
 
-There are valid uses for goto, some of which were illustrated in F. Rubin's article \cite{gotoodeep} disputing Dijkstra's original statement. A popular use, shown in the article itself, is when breaking out of deeply embedded scopes under a particular condition without needing to check that condition to leave each scope [FIG]. Hypothetically speaking, is there an alternative way to do this? When the issue is that we need to jump to a different area of code, namely a different scope, a jump statement of sorts would seem like a reasonable solution. And in order to break out of a scope into a different particular one, would it not be best to refer to it by a name--a label--so that the level of scope can change in the future? Is that not a goto statement?
+There are valid uses for goto, some of which were illustrated in F. Rubin's article \cite{gotoodeep} disputing Dijkstra's original statement. A popular use, shown in the article itself, is when breaking out of deeply embedded scopes under a particular condition without needing to check that condition to leave each scope [FIG]. This is in fact also described in the C programming book itself \cite{cprogramming}. Hypothetically speaking, is there an alternative way to do this? When the issue is that we need to jump to a different area of code, namely a different scope, a jumping statement seems like a reasonable solution. And in order to break out of a scope into a different particular one, would it not be best to refer to it by a name--a label--so that the level of scope can change in the future? Is that not a goto statement?
 
-An article by [lol who]\cite{againstgoto} refers to one particular solution to the above problem, featured in the Bliss programming language: to include a 'leave' statement to escape from a loop and jump to a label. This is safer than a goto statement when it comes to the risk of making code unreadable (which is goto's fault [CITE MANY], and definitely not the programmer's), as it can only go forward rather than back. This is a very logical solution, but calls to question whether it is really worthy to replace goto, as merely a restricted form of the same thing? A deeper question would be whether there is any use left for a goto statement that goes backwards in an environment wherein many believe any such goto in any text is explicitly evil[CITE]?
+An article by W. Wulf \cite{againstgoto} addresses one particular solution to the above problem, featured in the Bliss programming language: to include a 'leave' statement to escape from a loop and jump to a label. This is safer than a goto statement with its risk of making code unreadable (which is goto's fault [CITE MANY], and definitely not the programmer's), since it can only jump forward. This is a very logical solution, but calls to question whether it is really worthy to replace goto, as merely a restricted form of the same thing? A deeper question would be whether there is any use left for a goto statement that goes backwards in a world wherein many believe any such goto in any text is explicitly evil[CITE]?
 
-To find out, \textbf{goto ``goto in practice;'}
+To find out uses for backwards gotos \textbf{goto ``Goto in practice;'}
 
-An example of such a use 
-
-A more moden paper by R. Doss makes a 
 
 It may be that `goto' is included just to ensure the feature is available for special cases. However, given the extreme unpopularity of the goto statement[CITE], programmers are likely to avoid using it, sometimes at the expense of line count and computation time.
 
