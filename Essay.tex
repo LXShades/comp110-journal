@@ -1,5 +1,7 @@
 \documentclass{journal}
 
+\usepackage{listings}
+
 \title{On Goto Killing You in Your Sleep}
 \author{Louis Foy}
 \date{\today}
@@ -14,7 +16,7 @@
     month = "Mar",
     year = "1968",
     pages = "147-148",
-    location = "New York, NY, USA",
+    address = "New York, NY",
     url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=362947&CFID=827503237&CFTOKEN=60937548"
 }
 
@@ -27,7 +29,7 @@
     year = "1966",
     month = "Jun",
     pages = "413-432",
-    location = "New York, NY, USA",
+    address = "New York, NY",
     url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=365702"
 }
 
@@ -41,7 +43,7 @@
 
 @article{loopbreaking,
     title = "Multiple exits from a loop without the GOTO",
-    url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=362300&CFID=827503237&CFTOKEN=60937548
+    url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=362300&CFID=827503237&CFTOKEN=60937548"
 }
 
 @article{gotostudy,
@@ -59,7 +61,20 @@
     url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=1057812&CFID=827503237&CFTOKEN=60937548"
 }
 
+@article{pathfinding,
+    title = "A note on two problems in connexion with graphs",
+    author = "Edsger W. Dijkstra",
+    month = "Dec",
+    year = "1959",
+    pages = "269-271",
+    volume = "1",
+    booktitle = "Numerische Mathematik",
+    url = "https://dl-acm-org.ezproxy.falmouth.ac.uk/citation.cfm?id=2722945"
+}
+
 \end{filecontents*}
+
+\usepackage{graphicx}
 
 \begin{document}
 \maketitle
@@ -74,9 +89,15 @@
 % \textbf \textit \underline
 
 \section{\textunderscore \textunderscore Introduction:;}
-In March 1968, a notorious paper was published. Titled 'Go to statement considered harmful' \cite{goto}, it was written by Edsger W. Dijkstra, an influential pioneer of computer science during its early days, if `influential' were a measurement of the vast swathes of `considered harmful' papers he would inspire across acedemia (CITE). His paper can be summarised as a criticism that goto statements, by allowing the process to jump to various areas in code with no obvious links or recollection from where it came, the process of execution itself diverged greatly from the flow of text, compromising readability and the integrity of the code. He proposed that the use of goto statements be avoided outside machine level code.
+In March 1968, a notorious paper was published. Titled 'Go to statement considered harmful' \cite{goto}, it was written by Edsger W. Dijkstra, an influential pioneer of computer science during its early days, if `influential' were a measurement of the vast swathes of `considered harmful' papers one could instantly inspire across acedemia (CITE). His paper can be summarised as a criticism that using goto statements, by allowing the process to jump to various areas in code with no obvious links or recollection from where it came, causes the flow of the program's execution to diverge greatly from the flow of text, compromising readability and the integrity of the code. He proposed that the use of goto statements be avoided outside machine level code.
 
-In their cricitism of what was once common practice in the era[CITE], Dijkstra's statements were quite bold. While his motivation was apparently a negative correlation between programming quality and the number of goto statements in the code \cite{goto}, the observent would notice that Dijkstra created the popular pathfinding algorithm of the same name [CITE], and could very reasonably and logically conclude his hatred for the goto statement was because the ability to simply `go to' some code is far too easy. And thus began Dijkstra's collision-free descent into madness that pulled many programmers and academics along with him in the ``considered harmful'' phenomenon, in an ever deeping existential crisis that every single thing is flawed in some way.
+\begin{figure}
+\includegraphics[width=\linewidth]{std.pdf}
+\caption{A snippet of Dijkstra's pathfinding algorithm written with goto statements in Comic Sans. The fact that their code actually compiled was probably Dijkstra's biggest concern for the future of these programmers.}
+\label{fig:pathfinding}
+\end{figure}
+
+In their cricitism of what was once common practice in the era[CITE], Dijkstra's statements were quite bold. While his motivation was apparently a negative correlation between programming quality and the number of goto statements in the code \cite{goto}, the observent would notice that Dijkstra is the creator of the popular complex pathfinding algorithm now known by his name \cite{pathfinding}, and could very reasonably argue that his hatred for the goto statement manifested because the ability to simply `go to' some code is far too easy for the programmer. Thus began Dijkstra's collision-free descent into madness that pulled many programmers and academics along with him in the cold grasps of the ``considered harmful'' phenomenon, in the ever deeping existential crisis illustrating how every single thing is flawed in some way.
 
 For the next part of the essay \textbf{goto ``To Pascal''}
 
